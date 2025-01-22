@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react'
 export default function CreateProfile() {
     const account = useCurrentAccount();
     const [isLoading, setIsLoading] = useState(false)
-    const [value, setValue] = useState(0.0)
+    const [value, setValue] = useState('')
 
     const { toast } = useToast()
     const currentUser = useCurrentAccount()
@@ -39,11 +39,11 @@ export default function CreateProfile() {
     const handleChange = (origin: string) => {
         // 使用正则表达式来确保只有数字被输入
         // const numericRegex = /^[0-9]*$/;
-        const numericRegex = /\d+(\.\d+)?$/;
+        const numericRegex = /\d*(\.\d+)?$/;
         const newValueIsNumeric = numericRegex.test(origin);
      
         if (newValueIsNumeric) {
-          setValue(Number.parseFloat(origin));
+          setValue(origin);
         }
     };
 
@@ -58,7 +58,7 @@ export default function CreateProfile() {
 
     setIsLoading(true)
 
-    const tx = get_trans_add_balance(value)
+    const tx = get_trans_add_balance(Number.parseFloat(value));
     signAndExecuteTransaction(
       {
         transaction: tx,
