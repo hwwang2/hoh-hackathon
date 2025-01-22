@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { ConnectButton } from '@mysten/dapp-kit'
 import { Banana } from 'lucide-react'
+import { useCurrentAccount } from '@mysten/dapp-kit'
+import { networkConfig, suiClient } from '@/contracts/index';
 
 const navItems = [
   { path: '/', label: 'Home' },
@@ -14,6 +16,7 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname()
+  const account = useCurrentAccount();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background flex justify-center">
@@ -38,6 +41,11 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+            {account && account.address==networkConfig.testnet.variables.ownerId && <Link href="/admin"
+            className={cn(
+              "flex items-center text-sm font-medium text-muted-foreground",
+              "/admin" === pathname && "text-foreground"
+            )}>Manage</Link>}
           </nav>
         </div>
         
