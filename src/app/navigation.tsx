@@ -45,7 +45,7 @@ export function Navigation() {
             className={cn(
               "flex items-center text-sm font-medium text-muted-foreground",
               "/admin" === pathname && "text-foreground"
-            )}>Manage</Link>}
+            )}>Admin</Link>}
           </nav>
         </div>
         
