@@ -10,7 +10,7 @@ import { networkConfig, suiClient } from '@/contracts/index';
 
 const navItems = [
   { path: '/', label: 'Home' },
-  { path: '/resources', label: 'Resources' },
+  { path: '/wordle', label: 'Wordle' },
   { path: '/profile', label: 'Profile' },
 ]
 
