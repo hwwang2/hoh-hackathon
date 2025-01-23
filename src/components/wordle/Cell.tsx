@@ -1,5 +1,4 @@
 import { CharStatus } from "./statuses";
-// import classnames from "classnames";
 import { cn } from "@/lib/utils"
 
 type Props = {
