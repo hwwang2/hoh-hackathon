@@ -1,13 +1,9 @@
 'use client'
-// import { InformationCircleIcon } from "@heroicons/react/outline";
-import { InfoIcon, Plus } from 'lucide-react'
 import { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Grid } from "@/components/wordle/Grid";
 import { Keyboard } from "@/components/wordle/Keyboard";
-// import { AboutModal } from "./components/modals/AboutModal";
 import { InfoModal } from "./InfoModal";
-// import { WinModal } from "./components/modals/WinModal";
 import { isWordInWordList, isWinningWord, solution } from "@/components/wordle/words";
 import { useToast } from '@/hooks/use-toast'
 
