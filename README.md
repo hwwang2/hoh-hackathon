@@ -37,7 +37,11 @@ npm install @mysten/sui @mysten/dapp-kit
 npx shadcn-ui@latest init
 
 npx shadcn@latest add navigation-menu
-### 
+### 数据库操作
+npm install prisma --save-dev
+npx prisma db push
+npm install @prisma/client
+npx prisma generate
 
 
 ## Learn More

@@ -11,7 +11,8 @@ export interface User {
 
 export interface WordleGuess{
     guess: string,
-    status: string,
+    user: string,
+    status?: string,
 }
 
 export interface WordleDetail {
@@ -19,5 +20,5 @@ export interface WordleDetail {
     word: string,
     nonce: string,
     guesses: WordleGuess[],
-    overtime: Date
+    overtime?: Date|null
 }
