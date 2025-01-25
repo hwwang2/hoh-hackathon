@@ -1,10 +1,11 @@
 import { networkConfig, suiClient } from './';
 import type { User } from '../types';
 import { Transaction } from '@mysten/sui/transactions';
+import { MIST_PER_SUI } from '@mysten/sui/utils';
 
 export function get_trans_add_balance(coinCount: number) {
-    const tx = new Transaction()
-    const [coin] = tx.splitCoins(tx.gas, [coinCount*1e9]);
+    const tx = new Transaction();
+    const [coin] = tx.splitCoins(tx.gas, [coinCount*Number(MIST_PER_SUI)]);
     tx.moveCall({
       package: networkConfig.testnet.variables.packageId,
       module: 'nygame',

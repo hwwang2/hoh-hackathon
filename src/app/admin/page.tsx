@@ -15,13 +15,15 @@ import { get_trans_add_balance } from '@/contracts/nygame'
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
-  ConnectButton
+  ConnectButton,
+  useSuiClient
 } from '@mysten/dapp-kit'
 import { LoaderCircle, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function CreateProfile() {
     const account = useCurrentAccount();
+    const client = useSuiClient();
     const [isLoading, setIsLoading] = useState(false)
     const [value, setValue] = useState('')
 
@@ -66,10 +68,25 @@ export default function CreateProfile() {
       {
         onSuccess(data) {
           toast({
-            title: 'Balance Added',
+            title: 'Balance Add Submit',
             description: "Digest: " + data.digest,
           })
-          setIsLoading(false)
+          client.waitForTransaction({
+            digest: data.digest,
+            options: {
+              showEffects: true,
+            }
+          }).then(res=>{
+            console.log(res);
+            toast({
+              title: res.effects?.status.status,
+              description: res.effects?.status.error,
+            })
+          }).catch(err=>{
+            toast({title:"Erro", description:err,variant: 'destructive',});
+          }).finally(()=>{
+            setIsLoading(false)
+          });
         },
         onError() {
           toast({
