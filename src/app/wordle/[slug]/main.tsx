@@ -22,18 +22,20 @@ export function MainBoard({ id }: { id: string }) {
 
   const { toast } = useToast();
 
-  useEffect(() => {
+  const fetchGuess = ()=>{
     fetchData<WordleDetail>("/api/wordle?id="+id).then(res=>{
         setGuesses(res.guesses);
     }).catch(err=>{
         console.log(err);
     });
-    // let wdl = getWordleById(id);
-    // wdl.then((wd)=>{
-    //     if(wd){
-    //         setGuess2(wd.guesses);
-    //     }
-    // })
+  }
+
+  useEffect(() => {
+    fetchGuess();
+    const timer = setInterval(() => {
+        fetchGuess();
+      }, 2000);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {

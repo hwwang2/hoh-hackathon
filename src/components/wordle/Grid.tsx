@@ -1,6 +1,7 @@
 import { CompletedRow } from "./CompletedRow";
 import { CurrentRow } from "./CurrentRow";
 import { EmptyRow } from "./EmptyRow";
+import {WordleGuess} from "@/types"
 
 type Props = {
   guesses: WordleGuess[];
