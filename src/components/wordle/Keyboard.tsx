@@ -1,18 +1,22 @@
 import { KeyValue } from "./keybd";
-import { getStatuses } from "./statuses";
+import { getStatuses, getStatuses2 } from "./statuses";
 import { Key } from "./Key";
 import React from 'react';
+import { WordleGuess } from "@/types";
 
 type Props = {
   onChar: (value: string) => void;
   onDelete: () => void;
   onEnter: () => void;
-  guesses: string[];
+  guesses: WordleGuess[];
 };
 
 export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
-  const charStatuses = getStatuses(guesses);
+  const charStatuses = getStatuses2(guesses);
   console.log(charStatuses);
+  console.log(charStatuses["A"]);
+  console.log(charStatuses["a"]);
+  
 
   const onClick = (value: KeyValue) => {
     if (value === "ENTER") {

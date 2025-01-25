@@ -8,22 +8,23 @@ function setStatus(guesses: WordleGuess[], word: string){
     if(!guesses)
         return;
     guesses.forEach((ges) => {
+        ges.status="";
         ges.guess.split("").forEach((letter, i) => {
           if (!word.includes(letter)) {
             // make status absent
-            ges.status = "absent";
+            ges.status += "0";
             return;
           }
     
           if (letter === word[i]) {
             //make status correct
-            ges.status = "correct";
+            ges.status += "1";
             return;
           }
     
           if (ges.status !== "correct") {
             //make status present
-            ges.status = "present";
+            ges.status += "2";
           }
         });
     });

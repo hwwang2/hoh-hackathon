@@ -1,3 +1,4 @@
+import { WordleGuess } from "@/types";
 import { solution } from "./words";
 
 export type CharStatus = "absent" | "present" | "correct";
@@ -29,6 +30,45 @@ export type CharValue =
   | "B"
   | "N"
   | "M";
+
+export function convertStatus(i:String) : CharStatus|undefined {
+  if(!i){
+    return undefined;
+  }
+  if(i=="1"){
+    return "correct";
+  }
+  if(i=="2"){
+    return "present";
+  }
+  return "absent";
+}
+
+export const getStatuses2 = (
+  guesses: WordleGuess[]
+): { [key: string]: CharStatus } => {
+  const charObj: { [key: string]: CharStatus } = {};
+
+  guesses.forEach((word) => {
+    word.guess.split("").forEach((letter, i) => {
+      if(word.status){
+        let tmp = convertStatus(word.status[i]);
+        if(tmp=="correct"){
+          charObj[letter.toUpperCase()] = tmp;
+        }
+        if(tmp=="present"){
+          if(charObj[letter.toUpperCase()]!="correct")
+            charObj[letter.toUpperCase()] = tmp;
+        }
+        if(tmp=="absent"){
+          charObj[letter.toUpperCase()] = tmp;
+        }
+      }
+    });
+  });
+
+  return charObj;
+};
 
 export const getStatuses = (
   guesses: string[]

@@ -22,3 +22,9 @@ export interface WordleDetail {
     guesses: WordleGuess[],
     overtime?: Date|null
 }
+
+export interface R<T> {
+    ok: boolean,
+    desc: string,
+    data: T
+}

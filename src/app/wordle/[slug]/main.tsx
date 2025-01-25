@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Grid } from "@/components/wordle/Grid";
 import { Keyboard } from "@/components/wordle/Keyboard";
-import { InfoModal } from "./InfoModal";
+import { InfoModal } from "../InfoModal";
 import { isWordInWordList, isWinningWord, solution } from "@/components/wordle/words";
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/use-toast';
+// import {getWordleById} from '@/lib/wordle';
+import { R, WordleGuess, WordleDetail } from "@/types";
+import {fetchData} from "@/lib/utils"
 
-function App() {
-  const [guesses, setGuesses] = useState<string[]>([]);
+export function MainBoard({ id }: { id: string }) {
+  const [guesses, setGuesses] = useState<WordleGuess[]>([]);
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
 //   const [isWinModalOpen, setIsWinModalOpen] = useState(false);
@@ -17,7 +20,21 @@ function App() {
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
 
-  const { toast } = useToast()
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchData<WordleDetail>("/api/wordle?id="+id).then(res=>{
+        setGuesses(res.guesses);
+    }).catch(err=>{
+        console.log(err);
+    });
+    // let wdl = getWordleById(id);
+    // wdl.then((wd)=>{
+    //     if(wd){
+    //         setGuess2(wd.guesses);
+    //     }
+    // })
+  }, []);
 
   useEffect(() => {
     if (isGameWon) {
@@ -49,7 +66,7 @@ function App() {
     const winningWord = isWinningWord(currentGuess);
 
     if (currentGuess.length === 5 && guesses.length < 6 && !isGameWon) {
-      setGuesses([...guesses, currentGuess]);
+    //   setGuesses([...guesses, currentGuess]);
       setCurrentGuess("");
 
       if (winningWord) {
@@ -67,9 +84,43 @@ function App() {
 
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      list page.
+      {
+      isGameLost && <Alert>
+        {/* <Terminal className="h-4 w-4" /> */}
+        <AlertTitle>You lost!</AlertTitle>
+        <AlertDescription>
+        {`You lost, the word was ${solution}`}.
+        </AlertDescription>
+      </Alert>
+      }
+      <div className="flex w-80 mx-auto items-center mb-8">
+        <h1 className="text-xl grow font-bold">Play wordle to earn!</h1>
+        <InfoModal />
+        {/* <InfoIcon
+          className="h-6 w-6 cursor-pointer"
+          onClick={() => setIsInfoModalOpen(true)}
+        /> */}
+      </div>
+      <Grid guesses={guesses} currentGuess={currentGuess} />
+      <Keyboard
+        onChar={onChar}
+        onDelete={onDelete}
+        onEnter={onEnter}
+        guesses={guesses}
+      />
+      {/* <InfoModal
+        isOpen={isInfoModalOpen}
+        handleClose={() => setIsInfoModalOpen(false)}
+      /> */}
+      {/* <WinModal
+        isOpen={isWinModalOpen}
+        handleClose={() => setIsWinModalOpen(false)}
+        guesses={guesses}
+      />
+      <AboutModal
+        isOpen={isAboutModalOpen}
+        handleClose={() => setIsAboutModalOpen(false)}
+      /> */}
     </div>
   );
 }
-
-export default App;
