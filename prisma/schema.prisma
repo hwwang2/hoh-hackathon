@@ -9,9 +9,9 @@ datasource db {
 }
 
 model wordle {
-  id            String     @default(cuid()) @id
-  word          String
-  nonce         String
+  id            String     @id @default(cuid()) @db.VarChar(64)
+  word          String     @db.VarChar(16)
+  nonce         String     @db.VarChar(16)
   guesses       String?
   overtime      DateTime?
   confirmed     Int  @default(0)
