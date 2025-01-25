@@ -34,7 +34,7 @@ export function MainBoard({ id }: { id: string }) {
     fetchGuess();
     const timer = setInterval(() => {
         fetchGuess();
-      }, 2000);
+      }, 10000);
     return () => clearInterval(timer);
   }, []);
 

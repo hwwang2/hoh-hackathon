@@ -30,6 +30,34 @@ function setStatus(guesses: WordleGuess[], word: string){
     });
 }
 
+const pageSize=20;
+export const getWordleList = async (page: number) => {
+    const wds = await prisma.wordle.findMany({
+        where: {
+            confirmed: 1,
+        },
+        skip: (page-1)*pageSize,
+        take: pageSize,
+        orderBy:{
+            updatedAt: "desc"
+        }
+    });
+    if(!wds){
+        return [];
+    }
+    return wds.map(wd=>{
+        let wdl: WordleDetail = {
+            id: wd.id,
+            word: wd.word,
+            nonce: wd.nonce,
+            guesses: wd.guesses?JSON.parse(wd.guesses):[],
+            overtime: wd.overtime
+        }
+        setStatus(wdl.guesses, wdl.word);
+        return wdl; 
+    });
+};
+
 export const getWordleById = async (id: string) => {
     const wd = await prisma.wordle.findUnique({
         where: {

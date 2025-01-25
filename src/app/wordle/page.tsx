@@ -6,68 +6,50 @@ import { Keyboard } from "@/components/wordle/Keyboard";
 import { InfoModal } from "./InfoModal";
 import { isWordInWordList, isWinningWord, solution } from "@/components/wordle/words";
 import { useToast } from '@/hooks/use-toast'
+import { R, WordleGuess, WordleDetail } from "@/types";
+import {fetchData} from "@/lib/utils"
+import Link from "next/link";
 
 function App() {
-  const [guesses, setGuesses] = useState<string[]>([]);
-  const [currentGuess, setCurrentGuess] = useState("");
-  const [isGameWon, setIsGameWon] = useState(false);
-//   const [isWinModalOpen, setIsWinModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-//   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-  const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false);
-  const [isGameLost, setIsGameLost] = useState(false);
+  const [items, setItems] = useState<WordleDetail[]>([]); // 存储所有项目
+  const [page, setPage] = useState(1);    // 当前页码
+  const [loading, setLoading] = useState(false); // 是否正在加载中
 
-  const { toast } = useToast()
+  const { toast } = useToast();
+
+  const loadMoreItems = async () => {
+    if (loading) return;
+    setLoading(true);
+    fetchData<WordleDetail[]>("/api/wordle?action=list&page="+page).then(res=>{
+      setItems([...items, ...res]);
+      if(res){
+        setPage(page + 1);
+        setLoading(false);
+      }
+    });
+  };
 
   useEffect(() => {
-    if (isGameWon) {
-    //   setIsWinModalOpen(true);
-    }
-  }, [isGameWon]);
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+      loadMoreItems();
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    loadMoreItems();
+    // 清理函数
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []); // 确保依赖项正确，以避免不必要的调用或内存泄露
 
-  const onChar = (value: string) => {
-    if (currentGuess.length < 5 && guesses.length < 6) {
-      setCurrentGuess(`${currentGuess}${value}`);
-    }
-  };
-
-  const onDelete = () => {
-    setCurrentGuess(currentGuess.slice(0, -1));
-  };
-
-  const onEnter = () => {
-    if (!isWordInWordList(currentGuess)) {
-    //   setIsWordNotFoundAlertOpen(true);
-    //   return setTimeout(() => {
-    //     setIsWordNotFoundAlertOpen(false);
-    //   }, 2000);
-        toast({
-            title: 'Word not found',
-        });
-    }
-
-    const winningWord = isWinningWord(currentGuess);
-
-    if (currentGuess.length === 5 && guesses.length < 6 && !isGameWon) {
-      setGuesses([...guesses, currentGuess]);
-      setCurrentGuess("");
-
-      if (winningWord) {
-        return setIsGameWon(true);
-      }
-
-      if (guesses.length === 5) {
-        setIsGameLost(true);
-        return setTimeout(() => {
-          setIsGameLost(false);
-        }, 2000);
-      }
-    }
-  };
 
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      list page.
+       <ul>
+        {items.map(item => (
+          <li key={item.id}><Link href={"./wordle/"+item.id}>{item.word}</Link></li>
+        ))}
+      </ul>
+      {loading && <p>Loading more items...</p>}
     </div>
   );
 }

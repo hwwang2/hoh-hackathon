@@ -1,5 +1,5 @@
 import { type NextRequest } from 'next/server'
-import {getWordleById, generateWordle, updateWordleGuessById} from '@/lib/wordle'
+import {getWordleById, generateWordle, updateWordleGuessById, getWordleList} from '@/lib/wordle'
 import { NextApiRequest, NextApiResponse } from 'next';
 import { INTERNALS } from 'next/dist/server/web/spec-extension/request';
 import { WordleGuess } from '@/types';
@@ -13,9 +13,15 @@ export async function GET(request: NextRequest) {
 //       'API-Key': process.env.DATA_API_KEY,
 //     },
 //   })
-    const wd = await getWordleById(request.nextUrl.searchParams.get("id") as string);
-
-    return Response.json({"ok": (wd?true:false), "data": wd})
+    const action=request.nextUrl.searchParams.get("action") as string;
+    if(action=="list"){
+        const page = Number.parseInt(request.nextUrl.searchParams.get("page") as string);
+        const wd = await getWordleList(page);
+        return Response.json({"ok": true, "data": wd})
+    } else{
+        const wd = await getWordleById(request.nextUrl.searchParams.get("id") as string);
+        return Response.json({"ok": (wd?true:false), "data": wd})
+    }
 }
 
 export async function POST(request: NextRequest) {
