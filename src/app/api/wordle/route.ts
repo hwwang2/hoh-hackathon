@@ -1,5 +1,5 @@
 import { type NextRequest } from 'next/server'
-import {getWordleById, generateWordle, updateWordleGuessById, getWordleList} from '@/lib/wordle'
+import {getWordleById, generateWordle, updateWordleGuessById, getWordleList, confirmWordleById} from '@/lib/wordle'
 import { NextApiRequest, NextApiResponse } from 'next';
 import { INTERNALS } from 'next/dist/server/web/spec-extension/request';
 import { WordleGuess } from '@/types';
@@ -36,16 +36,30 @@ export async function POST(request: NextRequest) {
     if("new"===action){
         const wd = await generateWordle();
         return Response.json({"ok": (wd?true:false), "data": wd});
+    }else if("confirm"===action){
+        const wd = await getWordleById(data.get("id") as string);
+        if (!wd){
+            return Response.json({"ok": false, "desc": "id wrong!"})
+        }
+        const r = confirmWordleById(wd.id);
+        return Response.json({"ok": true, "data": r});
     }else if("guess"===action){
         const wd = await getWordleById(data.get("id") as string);
         if (!wd){
             return Response.json({"ok": false, "desc": "id wrong!"})
         }
+        let gus = data.get("guess") as string;
         let ges:WordleGuess = {
             user: data.get("user") as string,
             guess: data.get("guess") as string
         }
         wd.guesses.push(ges);
+        if(wd.guesses.length>6 || wd.overtime!=null){
+            return Response.json({"ok": true, "desc": "over guess or finished!"});
+        }
+        if(gus==wd.word){
+            wd.overtime = new Date();
+        }
         const r = updateWordleGuessById(wd);
         return Response.json({"ok": true, "data": r});
     }

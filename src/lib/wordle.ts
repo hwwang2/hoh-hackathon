@@ -104,7 +104,19 @@ export const updateWordleGuessById = async (wdl: WordleDetail) => {
           id: wdl.id,
         },
         data: {
-          guesses: JSON.stringify(wdl.guesses),
+            overtime: wdl.overtime,
+            guesses: JSON.stringify(wdl.guesses),
+        },
+    })
+}
+
+export const confirmWordleById = async (id:string) => {
+    return await prisma.wordle.update({
+        where: {
+          id,
+        },
+        data: {
+          confirmed: 1,
         },
     })
 }
