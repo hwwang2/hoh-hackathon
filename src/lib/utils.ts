@@ -53,3 +53,31 @@ export async function fetchData<T>(url: string): Promise<T> {
     throw error;
   }
 }
+
+export async function sendPostRequestWithMultipartForm<T>(url: string, formData: FormData): Promise<T> {
+	try {
+	  const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+		  // 通常不需要手动设置 Content-Type，因为 FormData 会自动生成正确的边界字符串
+		},
+		body: formData,
+	  });
+  
+	  if (!response.ok) {
+		throw new Error(`HTTP error! Status: ${response.status}`);
+	  }
+  
+	  // 解析 JSON 响应
+    const apiResponse: R<T> = await response.json();
+    if(!apiResponse.ok){
+      console.error('Error fetching data:', apiResponse.desc);
+      throw new Error(apiResponse.desc);
+    }    
+    // 返回数据部分
+    return apiResponse.data;
+	} catch (error) {
+	  console.error('Error during fetch POST request:', error);
+	  throw error;
+	}
+}

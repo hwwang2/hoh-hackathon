@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "listen": "npx ts-node src/lib/event-indexer.ts",
     "start": "next start",
     "lint": "next lint"
   },
