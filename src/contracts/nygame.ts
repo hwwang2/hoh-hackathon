@@ -44,9 +44,8 @@ export function get_trans_guess(gid: string, guess:string, coinCount: number) {
         state: &mut State,
         _admin_cap: &AdminCap,
  */
-export function get_trans_new_game(gid: string, word:string, nonce:string, coinCount: number) {
+export function get_trans_new_game(gid: string, word:string, nonce:string) {
   const tx = new Transaction();
-  const [coin] = tx.splitCoins(tx.gas, [coinCount*Number(MIST_PER_SUI)]);
   const sign = keccak256(gid+word+nonce);
   tx.moveCall({
     package: networkConfig.testnet.variables.packageId,
@@ -56,8 +55,7 @@ export function get_trans_new_game(gid: string, word:string, nonce:string, coinC
       tx.pure.string(gid),
       tx.pure.vector('u8', sign),
       tx.object(networkConfig.testnet.variables.stateId),
-      tx.object(networkConfig.testnet.variables.adminCap),
-      coin,
+      tx.object(networkConfig.testnet.variables.adminCap)
     ],
   });
 
