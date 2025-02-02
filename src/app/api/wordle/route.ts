@@ -31,6 +31,10 @@ export async function POST(request: NextRequest) {
     //       'API-Key': process.env.DATA_API_KEY,
     //     },
     //   })
+    const key=request.nextUrl.searchParams.get("token") as string;
+    if(key != process.env.DATA_API_KEY){
+        return Response.json({"ok": false, "desc": "token wrong!"})
+    }
     const data = await request.formData();
     const action = data.get("action");
     if("new"===action){
@@ -49,6 +53,13 @@ export async function POST(request: NextRequest) {
             return Response.json({"ok": false, "desc": "id wrong!"})
         }
         let gus = data.get("guess") as string;
+        if(wd.guesses){
+            for(let i=0;i<wd.guesses.length;i++){
+                if(wd.guesses[i].guess==gus){
+                    return Response.json({"ok": false, "desc": "repeated guess!"})
+                }
+            }
+        }
         let ges:WordleGuess = {
             user: data.get("user") as string,
             guess: data.get("guess") as string
