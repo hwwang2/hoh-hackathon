@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     //     },
     //   })
     const key=request.nextUrl.searchParams.get("token") as string;
-    if(key != process.env.DATA_API_KEY){
+    if(key != process.env.ADMIN_TOKEN){
         return Response.json({"ok": false, "desc": "token wrong!"})
     }
     const data = await request.formData();
