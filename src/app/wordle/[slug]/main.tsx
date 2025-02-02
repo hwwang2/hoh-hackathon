@@ -95,6 +95,7 @@ export function MainBoard({ id }: { id: string }) {
     }
 
     const tx = get_trans_guess(id, currentGuess, COIN_NEED[wordle.guesses.length]);
+    console.log(tx);
     signAndExecuteTransaction(
       {
         transaction: tx,
