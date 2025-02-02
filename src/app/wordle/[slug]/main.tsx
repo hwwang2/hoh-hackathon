@@ -76,7 +76,23 @@ export function MainBoard({ id }: { id: string }) {
           toast({
             title: 'Draw Submited',
             description: "Digest: " + data.digest,
-          })
+          });
+          client.waitForTransaction({
+            digest: data.digest,
+            options: {
+              showEffects: true,
+            }
+          }).then(res=>{
+            console.log(res);
+            toast({
+              title: res.effects?.status.status,
+              description: res.effects?.status.error,
+            })
+          }).catch(err=>{
+            toast({title:"Erro", description:err,variant: 'destructive',});
+          }).finally(()=>{
+            
+          });
         },
         onError(err) {
           toast({
@@ -159,7 +175,8 @@ export function MainBoard({ id }: { id: string }) {
           toast({
             title: 'Guess Submit',
             description: "Digest: " + data.digest,
-          })
+          });
+          setCurrentGuess("");
           client.waitForTransaction({
             digest: data.digest,
             options: {
@@ -167,7 +184,6 @@ export function MainBoard({ id }: { id: string }) {
             }
           }).then(res=>{
             console.log(res);
-            setCurrentGuess("");
             toast({
               title: res.effects?.status.status,
               description: res.effects?.status.error,
