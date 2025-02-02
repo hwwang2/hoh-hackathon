@@ -59,7 +59,7 @@ export default function NewGame() {
       return;
     }
 
-    const tx = get_trans_new_game(wordle.id, wordle.word, wordle.nonce);
+    const tx = get_trans_new_game(wordle.id, wordle.word.toUpperCase(), wordle.nonce);
     signAndExecuteTransaction(
       {
         transaction: tx,

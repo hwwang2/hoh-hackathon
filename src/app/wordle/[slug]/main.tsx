@@ -25,12 +25,27 @@ export function MainBoard({ id }: { id: string }) {
   const [wordle, setWordle] = useState<WordleDetail>({id, word:"",nonce:"",guesses:[]});
 
   const { toast } = useToast();
-
+  function getTimesByLength(n:number){
+    if(n==0) return "100X";
+    if(n==1) return "10X";
+    if(n==2) return "5X";
+    if(n==3) return "3X";
+    if(n==4) return "2X";
+    if(n==5) return "1.25X";
+    return "";
+  }
+  function getTitle(){
+    if(wordle.overtime){
+      return "Game Over!";
+    }
+    let x = getTimesByLength(wordle.guesses.length);
+    return "Play to WIN "+x;
+  }
   const isWinner = ()=>{
     if(!account) return false;
-    if(!wordle.word) return false;
+    if(!wordle.word || !wordle.overtime) return false;
     wordle.guesses.forEach(wd=>{
-      if(wd.guess==wordle.word && account.address==wd.user) return true;
+      if(wd.guess.toUpperCase()==wordle.word.toUpperCase() && account.address==wd.user) return true;
     })
     return false;
   }
@@ -147,7 +162,9 @@ export function MainBoard({ id }: { id: string }) {
       </Alert>
       }
       <div className="flex w-80 mx-auto items-center mb-8">
-        <h1 className="text-xl grow font-bold">Play wordle to earn!</h1>
+        <h1 className="text-xl grow font-bold">
+        {getTitle()}
+        </h1>
         <InfoModal />
       </div>
       <Grid guesses={wordle.guesses} currentGuess={currentGuess} />

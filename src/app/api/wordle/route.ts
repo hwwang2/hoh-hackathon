@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
             user: data.get("user") as string,
             guess: data.get("guess") as string
         }
-        wd.guesses.push(ges);
         if(wd.guesses.length>6 || wd.overtime!=null){
             return Response.json({"ok": true, "desc": "over guess or finished!"});
         }
-        if(gus==wd.word){
+        wd.guesses.push(ges);
+        if(gus==wd.word || wd.guesses.length==6){
             wd.overtime = new Date();
         }
         const r = updateWordleGuessById(wd);

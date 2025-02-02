@@ -79,7 +79,7 @@ export const getWordleById = async (id: string) => {
 };
 
 export const generateWordle = async () => {
-    let word = WORDS[Math.floor(Math.random() * WORDS.length)];
+    let word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
     let nonce = generateRandomString(10);
     const wd = await prisma.wordle.create({
         data: {
