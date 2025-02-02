@@ -26,7 +26,7 @@ export function get_trans_guess(gid: string, guess:string, coinCount: number) {
   tx.moveCall({
     package: networkConfig.testnet.variables.packageId,
     module: 'nygame',
-    function: 'add_balance',
+    function: 'guess',
     arguments: [
       tx.pure.string(gid),
       tx.pure.string(guess),
@@ -62,4 +62,21 @@ export function get_trans_new_game(gid: string, word:string, nonce:string) {
   return tx;
 }
 
-export const COIN_NEED=[0.01, 0.1];
+export function get_trans_draw_reward(gid: string, nonce:string, idx:number) {
+  const tx = new Transaction();
+  tx.moveCall({
+    package: networkConfig.testnet.variables.packageId,
+    module: 'nygame',
+    function: 'draw_reward',
+    arguments: [
+      tx.pure.string(gid),
+      tx.pure.string(nonce),
+      tx.pure.u64(idx),
+      tx.object(networkConfig.testnet.variables.stateId)
+    ],
+  });
+
+  return tx;
+}
+
+export const COIN_NEED=[0.01, 0.1, 0.2, 0.33, 0.5, 0.8];

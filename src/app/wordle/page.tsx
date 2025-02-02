@@ -39,9 +39,9 @@ function App() {
 
 
   return (
-    <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div className="py-8 mx-auto flex flex-wrap space-x-4 space-y-4">
         {items.map(item => (
-          <GameCard wordle={item} />
+          <GameCard  wordle={item} />
           // <li key={item.id}><Link href={"./wordle/"+item.id}>{item.word}</Link></li>
         ))}
       {loading && <p>Loading more items...</p>}
