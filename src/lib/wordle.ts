@@ -74,7 +74,7 @@ export const getWordleById = async (id: string) => {
         guesses: wd.guesses?JSON.parse(wd.guesses):[],
         overtime: wd.overtime
     }
-    setStatus(wdl.guesses, wdl.word);
+    setStatus(wdl.guesses, wdl.word.toUpperCase());
     return wdl;
 };
 

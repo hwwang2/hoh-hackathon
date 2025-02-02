@@ -12,11 +12,7 @@ type Props = {
 };
 
 export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
-  const charStatuses = getStatuses2(guesses);
-  console.log(charStatuses);
-  console.log(charStatuses["A"]);
-  console.log(charStatuses["a"]);
-  
+  const charStatuses = getStatuses2(guesses);  
 
   const onClick = (value: KeyValue) => {
     if (value === "ENTER") {

@@ -113,6 +113,7 @@ export function MainBoard({ id }: { id: string }) {
             }
           }).then(res=>{
             console.log(res);
+            setCurrentGuess("");
             toast({
               title: res.effects?.status.status,
               description: res.effects?.status.error,
