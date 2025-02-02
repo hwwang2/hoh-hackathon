@@ -1,10 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Grid } from "@/components/wordle/Grid";
-import { Keyboard } from "@/components/wordle/Keyboard";
-import { InfoModal } from "./InfoModal";
-import { isWordInWordList, isWinningWord, solution } from "@/components/wordle/words";
+import GameCard from "./GameCard";
 import { useToast } from '@/hooks/use-toast'
 import { R, WordleGuess, WordleDetail } from "@/types";
 import {fetchData} from "@/lib/utils"
@@ -44,11 +40,10 @@ function App() {
 
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-       <ul>
         {items.map(item => (
-          <li key={item.id}><Link href={"./wordle/"+item.id}>{item.word}</Link></li>
+          <GameCard wordle={item} />
+          // <li key={item.id}><Link href={"./wordle/"+item.id}>{item.word}</Link></li>
         ))}
-      </ul>
       {loading && <p>Loading more items...</p>}
     </div>
   );

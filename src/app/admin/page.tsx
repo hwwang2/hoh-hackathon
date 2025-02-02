@@ -34,7 +34,7 @@ export default function App() {
   );
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center space-x-4 space-y-4'>
       <AddBalance />
       <NewGame />
     </div>
