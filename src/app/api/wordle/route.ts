@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
             }
         }
         let ges:WordleGuess = {
-            user: data.get("user") as string,
+            user: data.get("owner") as string,
             guess: data.get("guess") as string
         }
         if(wd.guesses.length>6 || wd.overtime!=null){
