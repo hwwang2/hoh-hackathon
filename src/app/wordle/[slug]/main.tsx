@@ -6,10 +6,11 @@ import { Keyboard } from "@/components/wordle/Keyboard";
 import { InfoModal } from "../InfoModal";
 import { isWordInWordList } from "@/components/wordle/words";
 import { useToast } from '@/hooks/use-toast';
-import { get_trans_guess, COIN_NEED } from '@/contracts/nygame'
+import { get_trans_guess, COIN_NEED, get_trans_draw_reward } from '@/contracts/nygame'
 // import {getWordleById} from '@/lib/wordle';
 import { WordleDetail } from "@/types";
 import {fetchData} from "@/lib/utils";
+import { Button } from '@/components/ui/button';
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
@@ -48,6 +49,44 @@ export function MainBoard({ id }: { id: string }) {
       if(wd.guess.toUpperCase()==wordle.word.toUpperCase() && account.address==wd.user) return true;
     })
     return false;
+  }
+
+  const handleDrawPrize = ()=>{
+    if(!wordle.overtime)
+      return;
+    let winIdx = -1;
+    for(let i=0; i<wordle.guesses.length;i++){
+      let gez = wordle.guesses[i];
+      if(gez.guess==wordle.word){
+        winIdx = i;
+        break;
+      }
+    }
+    if(winIdx==-1){
+      return;
+    }
+    const tx = get_trans_draw_reward(id, wordle.nonce, winIdx);
+    console.log(tx);
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess(data) {
+          toast({
+            title: 'Draw Submited',
+            description: "Digest: " + data.digest,
+          })
+        },
+        onError(err) {
+          toast({
+            title: 'Draw Failed',
+            description: err.message,
+            variant: 'destructive',
+          })
+        },
+      },
+    );
   }
 
   const fetchGuess = ()=>{
@@ -168,6 +207,9 @@ export function MainBoard({ id }: { id: string }) {
         <InfoModal />
       </div>
       <Grid guesses={wordle.guesses} currentGuess={currentGuess} />
+      {isWinner() && <Button onClick={handleDrawPrize}>
+          Draw Prize!
+        </Button>}
       {!gameOver && <Keyboard
         onChar={onChar}
         onDelete={onDelete}
