@@ -32,11 +32,11 @@ export async function POST(request: NextRequest) {
     //     },
     //   })
     const key=request.nextUrl.searchParams.get("token") as string;
-    if(key != process.env.ADMIN_TOKEN){
-        return Response.json({"ok": false, "desc": "token wrong!"})
-    }
     const data = await request.formData();
     const action = data.get("action");
+    if(key != process.env.ADMIN_TOKEN && action!="new"){
+        return Response.json({"ok": false, "desc": "token wrong!"})
+    }
     if("new"===action){
         const wd = await generateWordle();
         return Response.json({"ok": (wd?true:false), "data": wd});
