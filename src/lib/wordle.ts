@@ -54,6 +54,10 @@ export const getWordleList = async (page: number) => {
             overtime: wd.overtime
         }
         setStatus(wdl.guesses, wdl.word);
+        if(!wdl.overtime){
+            wdl.nonce="";
+            wdl.word="";
+        }
         return wdl; 
     });
 };
@@ -75,6 +79,10 @@ export const getWordleById = async (id: string) => {
         overtime: wd.overtime
     }
     setStatus(wdl.guesses, wdl.word.toUpperCase());
+    if(!wdl.overtime){
+        wdl.nonce="";
+        wdl.word="";
+    }
     return wdl;
 };
 
