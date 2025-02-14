@@ -18,7 +18,7 @@ export default function App() {
     const account = useCurrentAccount();
 
   if (!account) return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center py-8'>
         <Card className='max-w-[450px]'>
         <CardHeader>
             <CardTitle>Wallet not connected!</CardTitle>
@@ -34,7 +34,7 @@ export default function App() {
   );
 
   return (
-    <div className='flex justify-center space-x-4 space-y-4'>
+    <div className='flex justify-center gap-4 py-8'>
       <AddBalance />
       <NewGame />
     </div>

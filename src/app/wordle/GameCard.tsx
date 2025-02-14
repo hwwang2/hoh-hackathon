@@ -45,7 +45,7 @@ export default function GameCard({wordle}:Props) {
     return "Win "+x+" from wordle game!";
   }
   return (
-    <div className='w-full md:w-1/2 p-4'>
+    <div className='w-full md:w-1/2 p-4 items-center'>
     <Card className=''>
       <CardHeader>
         <CardTitle>{getTitle()}</CardTitle>
