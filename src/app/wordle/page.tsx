@@ -44,7 +44,7 @@ function App() {
           <GameCard wordle={item} />
           // <li key={item.id}><Link href={"./wordle/"+item.id}>{item.word}</Link></li>
         ))}
-      {loading && <p>Loading more items...</p>}
+      {loading && <p className="w-full text-center">Loading more items...</p>}
     </div>
   );
 }

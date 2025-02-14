@@ -4,14 +4,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { ConnectButton } from '@mysten/dapp-kit'
-import { Banana } from 'lucide-react'
+import { Bandage } from 'lucide-react'
 import { useCurrentAccount } from '@mysten/dapp-kit'
 import { networkConfig, suiClient } from '@/contracts/index';
 
 const navItems = [
-  { path: '/', label: 'Home' },
+  // { path: '/', label: 'Home' },
   { path: '/wordle', label: 'Wordle' },
-  { path: '/profile', label: 'Profile' },
+  // { path: '/profile', label: 'Profile' },
 ]
 
 export function Navigation() {
@@ -23,8 +23,8 @@ export function Navigation() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex gap-6 md:gap-10">
           <div className="flex w-8 items-center rounded-full overflow-hidden">
-            <Link href="/" className="flex items-center space-x-2">
-              <Banana className='size-8' />
+            <Link href="/wordle" className="flex items-center space-x-2">
+              <Bandage className='size-8' />
               {/* <Image src="/logo/logo.jpg" alt="Sui Logo" width={80} height={40} /> */}
             </Link>
           </div>
