@@ -45,9 +45,12 @@ export function MainBoard({ id }: { id: string }) {
   const isWinner = ()=>{
     if(!account) return false;
     if(!wordle.word || !wordle.overtime) return false;
-    wordle.guesses.forEach(wd=>{
+    for(let wd of wordle.guesses){
       if(wd.guess.toUpperCase()==wordle.word.toUpperCase() && account.address==wd.user) return true;
-    })
+    }
+    // wordle.guesses.forEach(wd=>{
+    //   if(wd.guess.toUpperCase()==wordle.word.toUpperCase() && account.address==wd.user) return true;
+    // })
     return false;
   }
 
