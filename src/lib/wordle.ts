@@ -86,6 +86,25 @@ export const getWordleById = async (id: string) => {
     return wdl;
 };
 
+export const getWordleById2 = async (id: string) => {
+    const wd = await prisma.wordle.findUnique({
+        where: {
+            id: id,
+        }
+    });
+    if(!wd){
+        return null;
+    }
+    let wdl: WordleDetail = {
+        id: wd.id,
+        word: wd.word,
+        nonce: wd.nonce,
+        guesses: wd.guesses?JSON.parse(wd.guesses):[],
+        overtime: wd.overtime
+    }
+    return wdl;
+};
+
 export const generateWordle = async () => {
     let word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
     let nonce = generateRandomString(10);
